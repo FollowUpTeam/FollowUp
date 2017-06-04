@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="blue_toolbar_bg_nor">#0a9fd1</color>
+    <color name="blue_toolbar_bg_sel">#32b5e5</color>
+    <color name="black_05_alpha">#0C000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="purple">#aa66cc</color>
+    <color name="gray">#696969</color>
+</resources>

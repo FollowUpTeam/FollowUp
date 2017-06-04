@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">随访</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="phone_num">手机号</string>
+    <string name="password">密码</string>
+    <string name="re_password">确认密码</string>
+    <string name="username">姓名</string>
+    <string name="symptom">症状:</string>
+    <string name="diagnose">诊断:</string>
+    <string name="paroxysm">发病:</string>
+
+</resources>

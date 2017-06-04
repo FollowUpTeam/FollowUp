@@ -1,0 +1,1 @@
+include ':app', ':mvp', ':model', ':library', ':common-utils'
