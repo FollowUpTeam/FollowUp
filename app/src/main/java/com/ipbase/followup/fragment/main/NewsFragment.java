@@ -17,6 +17,7 @@ import com.kesar.mvp.view.INewsView;
  */
 public class NewsFragment extends TitleBarFragment<NewsPresenter> implements INewsView
 {
+    //测试
     @Override
     protected int getLayoutId()
     {
