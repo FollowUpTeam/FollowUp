@@ -1,11 +1,14 @@
 package com.ipbase.followup.fragment.main;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ipbase.followup.R;
@@ -14,6 +17,7 @@ import com.ipbase.followup.bean.Bingli;
 import com.kesar.mvp.presenter.impl.BingLiPresenter;
 import com.kesar.mvp.view.IBingLiView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +47,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     private int gravatar;
     private String name;
     private String sex;
-
+    private View rootView;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_bingli;
@@ -55,7 +59,6 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
         setRightBtnVisable(true);
         setRightToLeftBtnVisable(false);
         setRightBtnImage(R.drawable.icon_add);
-
     }
 
     @Override
@@ -69,7 +72,8 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
         toast(text);
     }
 
-    public void initList() {
+    public void initList() {//创建病例数据列表
+        list.clear();
         bingliData.setName("老王");
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.head);
         bingliData.setHead(drawable);
@@ -78,16 +82,26 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
         list.add(bingliData);
         bingliAdapter = new BingliAdapter(getContext(), list);
         lvBingliFragment.setAdapter(bingliAdapter);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        if(rootView==null)
+        {
+            rootView = super.onCreateView(inflater, container, savedInstanceState);
+            ButterKnife.bind(this, rootView);
+            initList();
+            lvBingliFragment.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialogDel(position);
+                    return true;
+                }
+            });
+        }
 
-        initList();
-        ButterKnife.bind(this, rootView);
+
+
         return rootView;
     }
 
@@ -95,8 +109,22 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
 
-
+    protected void dialogDel(final int position) //删除确认对话框
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
+        builder.setTitle("删除确认");
+        builder.setItems(new String[]{"删除此记录"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which)
+                {
+                    case 0:list.remove(position);bingliAdapter.notifyDataSetChanged();break;
+                }
+            }
+        });
+        builder.show();
     }
 
 
