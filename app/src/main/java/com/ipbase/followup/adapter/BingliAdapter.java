@@ -62,18 +62,6 @@ public class BingliAdapter extends BaseAdapter {
 
             view = mInflater.inflate(R.layout.bingli_item, null);
             viewHolder=new ViewHolder(view);
-//            viewHolder.ivGravatar=(ImageView)view.findViewById(R.id.iv_gravatar);
-//            viewHolder.tv_UserName=(TextView)view.findViewById(R.id.tv_patientName);
-//            viewHolder.tv_gender=(TextView)view.findViewById(R.id.tv_gender);
-//            viewHolder.age=(TextView)view.findViewById(R.id.tv_age);
-//            viewHolder.readFlagText=(TextView)view.findViewById(R.id.tv_bingliFlag);
-//            viewHolder.readFlagImg=(ImageView)view.findViewById(R.id.iv_gravatar);
-//            viewHolder.tv1=(TextView)view.findViewById(R.id.tv_zhengzhuang);
-//            viewHolder.tv2=(TextView)view.findViewById(R.id.tv_zhengduan);
-//            viewHolder.tv3=(TextView)view.findViewById(R.id.tv_fabing);
-//            viewHolder.date=(TextView)view.findViewById(R.id.tv_date);
-//            viewHolder.tv_huizheng=(TextView)view.findViewById(R.id.tv_huizhen);
-//            viewHolder.tv_pinglun=(TextView)view.findViewById(R.id.tv_pinglun);
 
             view.setTag(viewHolder);
         } else {
@@ -107,7 +95,6 @@ public class BingliAdapter extends BaseAdapter {
 
     //控制toast时间-----------------
     private static Toast mToast;
-
     public static void showToast(String msg) {
 
         if (mToast == null) {

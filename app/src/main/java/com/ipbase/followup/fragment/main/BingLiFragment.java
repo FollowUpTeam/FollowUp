@@ -30,8 +30,8 @@ import butterknife.ButterKnife;
  * 类描述：病历界面
  * 创建人：lxh
  * 创建时间：2016/4/13 8:16
- * 修改人：lxh
- * 修改时间：2016/4/13 8:16
+ * 修改人：locky
+ * 修改时间：2017/6/6
  * 修改备注：
  */
 public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements IBingLiView {

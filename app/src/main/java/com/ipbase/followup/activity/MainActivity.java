@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ipbase.followup.R;
 import com.ipbase.followup.activity.base.AbsViewActivity;
+import com.kesar.common_utils.SkipActivityUtil;
 import com.kesar.mvp.presenter.impl.MainPresenter;
 import com.ipbase.followup.fragment.main.BingLiFragment;
 import com.ipbase.followup.fragment.main.DataFragment;
@@ -170,6 +171,17 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
     @Override
     public void rightClick()
     {
+        switch (getThisTitle())
+        {
+            case "病历":
+            {
+                SkipActivityUtil.skip(this,UploadBingliActivity.class);
+                break;
+            }
+        }
+
+
+
         getPresenter().rightClick();
     }
 
@@ -191,6 +203,19 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
         {
             mTitleBar.setTitle(title);
         }
+    }
+
+    /**
+     * 获取标题
+     *
+     */
+    public String getThisTitle()
+    {
+        if (mTitleBar != null)
+        {
+            return mTitleBar.getTitle();
+        }
+         return "";
     }
 
     /**
