@@ -219,6 +219,17 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
     }
 
     /**
+     * 设置左侧按钮是否可见
+     *
+     * @param flag 是否可见
+     */
+    @Override
+    public void setLeftBtnVisable(boolean flag) {
+        if (mTitleBar != null) {
+            mTitleBar.setLeftBtnVisable(flag);
+        }
+    }
+    /**
      * 设置右侧靠左的按钮是否可见
      *
      * @param flag

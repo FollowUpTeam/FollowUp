@@ -54,7 +54,7 @@ public class SplashActivity extends AbsViewActivity<SplashPresenter> implements 
     public void skipToLoginActivity()
     {
         //SkipActivityUtil.skip(this,LoginActivity.class);
-        SkipActivityUtil.skip(this,MainActivity.class);
+        SkipActivityUtil.skip(this,LoginActivity.class);
 
         finish();
     }

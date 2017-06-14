@@ -69,9 +69,13 @@ public class BingliAdapter extends BaseAdapter {
         }
 
         viewHolder.tvPatientName.setText(data.get(position).getName());
-        viewHolder.ivGravatar.setImageDrawable(data.get(position).getHead());
+        //viewHolder.ivGravatar.setImageDrawable(data.get(position).getHead());
         viewHolder.tvGender.setText(data.get(position).getGender());
         viewHolder.tvAge.setText(data.get(position).getAge());
+
+        viewHolder.tvZhengzhuang.setText(data.get(position).getZhengzhuang());
+        viewHolder.tvZhengduan.setText(data.get(position).getZhenduan());
+        viewHolder.tvFabing.setText(data.get(position).getFabing());
 
         viewHolder.tvHuizhen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +90,7 @@ public class BingliAdapter extends BaseAdapter {
             }
         });
 
+        viewHolder.tvDate.setText(data.get(position).getCreatedAt());
 
 
         return view;
