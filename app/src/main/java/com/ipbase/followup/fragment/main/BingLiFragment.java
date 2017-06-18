@@ -70,8 +70,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
 
     @Override
     public void initView() {
-        //BmobSDK.init(getContext());
-        //refreshLayout=bingliSwipeRefresh;
+
         setTitle("病历");
         setRightBtnVisable(true);
         setRightToLeftBtnVisable(false);
@@ -149,6 +148,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     public void onResume() {//返回界面时刷新
         super.onResume();
         new Thread(getDataRunable).start();
+
     }
 
     protected void dialogDel(final int position) //删除确认对话框

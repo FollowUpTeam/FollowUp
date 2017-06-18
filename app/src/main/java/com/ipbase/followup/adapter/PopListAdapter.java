@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ipbase.followup.R;
-import com.ipbase.followup.bean.Bingli;
+import com.ipbase.followup.activity.UploadBingliActivity;
 import com.ipbase.followup.model.bean.User;
 
 import java.util.List;
@@ -67,6 +67,13 @@ public class PopListAdapter extends BaseAdapter {
         }
         viewHolder.tvPoplistItemUserName.setText(data.get(position).getUsername());
         viewHolder.tvPoplistItemRealName.setText(data.get(position).getRealName());
+        viewHolder.llListviewItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadBingliActivity.patientUser=data.get(position);
+                showToast(data.get(position).getRealName());
+            }
+        });
         return view;
     }
 
@@ -89,6 +96,8 @@ public class PopListAdapter extends BaseAdapter {
         TextView tvPoplistItemUserName;
         @Bind(R.id.tv_poplistItemRealName)
         TextView tvPoplistItemRealName;
+        @Bind(R.id.ll_listviewItem)
+        LinearLayout llListviewItem;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

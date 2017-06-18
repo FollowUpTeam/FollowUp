@@ -1,5 +1,6 @@
 package com.kesar.mvp.presenter.impl;
 
+import com.kesar.common_utils.ToastUtils;
 import com.kesar.mvp.model.IBmobInitModel;
 import com.kesar.mvp.model.impl.BmobInitModel;
 import com.kesar.mvp.presenter.AbsBasePresenter;
@@ -43,6 +44,7 @@ public class SplashPresenter extends AbsBasePresenter<ISplashView, IBmobInitMode
                 getModel().initBmobSdk(getView().getContext());
                 // 跳转
                 if (BmobUser.getCurrentUser() != null) {
+                    ToastUtils.show(getView().getContext(),"欢迎"+BmobUser.getCurrentUser().getUsername().toString());
                     getView().skipToMainActivity();
                 } else
                     getView().skipToLoginActivity();
