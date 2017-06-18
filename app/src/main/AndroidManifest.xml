@@ -38,7 +38,8 @@
         </activity>
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegActivity" />
-        <activity android:name=".activity.UploadBingliActivity"></activity>
+        <activity android:name=".activity.UploadBingliActivity" />
+        <activity android:name=".activity.BingliDetailActivity"></activity>
     </application>
 
 </manifest>

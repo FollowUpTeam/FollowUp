@@ -29,7 +29,7 @@ public class BingliAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private String[][] imgUrls;
     private ViewHolder viewHolder;
-
+    private boolean readFlag=false;
 
     public BingliAdapter(Context context, List<Bingli> data) {
 
@@ -76,6 +76,8 @@ public class BingliAdapter extends BaseAdapter {
         viewHolder.tvZhengzhuang.setText(data.get(position).getZhengzhuang());
         viewHolder.tvZhengduan.setText(data.get(position).getZhenduan());
         viewHolder.tvFabing.setText(data.get(position).getFabing());
+        viewHolder.tvDate.setText(data.get(position).getCreatedAt());
+        changeReadFlag(data.get(position).getReadFlag());
 
         viewHolder.tvHuizhen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +92,31 @@ public class BingliAdapter extends BaseAdapter {
             }
         });
 
-        viewHolder.tvDate.setText(data.get(position).getCreatedAt());
+
 
 
         return view;
     }
 
+    private void changeReadFlag(Boolean readFlag)
+    {
+        if(readFlag!=null)
+        {
+            if(readFlag)
+            {
+                viewHolder.tvBingliFlag.setText("已读");
+                viewHolder.tvBingliFlag.setTextColor(context.getResources().getColor(R.color.purple));
+                viewHolder.ivReadFlagImage.setImageResource(R.drawable.hadread);
+            }else
+            {
+                viewHolder.tvBingliFlag.setText("未读");
+                viewHolder.tvBingliFlag.setTextColor(context.getResources().getColor(R.color.red));
+                viewHolder.ivReadFlagImage.setImageResource(R.drawable.notread);
+            }
+
+        }
+
+    }
 
 
     //控制toast时间-----------------

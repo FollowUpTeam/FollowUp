@@ -14,19 +14,21 @@ import com.ipbase.followup.activity.base.AbsViewActivity;
 import com.ipbase.followup.bean.Bingli;
 import com.ipbase.followup.model.bean.User;
 import com.ipbase.followup.widget.TitleBar;
-import com.kesar.library.bmob.BmobSDK;
 import com.kesar.mvp.presenter.impl.MainPresenter;
 import com.kesar.mvp.view.IMainView;
 import com.kesar.mvp.view.ITitleBarView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class UploadBingliActivity extends AbsViewActivity<MainPresenter> implements IMainView, ITitleBarView, TitleBar.BtnClickListener {
 
@@ -42,8 +44,12 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
     LinearLayout llJiuZhenXinXi;
     @Bind(R.id.btn_jiuZhenXinXi)
     ImageButton btnJiuZhenXinXi;
+    @Bind(R.id.btn_RenYuanXinXi)
+    ImageButton btnRenYuanXinXi;
+    @Bind(R.id.ll_RenYuanXinXi)
+    LinearLayout llRenYuanXinXi;
     private LayoutInflater layoutInflater;
-
+    private static List<User> patientDatalist = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -59,7 +65,6 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
     public void initView() {
         // 实例化布局对象
         layoutInflater = LayoutInflater.from(this);
-        //BmobSDK.init(getContext());
         //实例化标题栏View
         tbvTitlebarUpload.setTitleBarListener(this);
         setTitle("添加病历");
@@ -86,21 +91,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     @Override
     public void rightClick() {
-        UploadBingliData();//添加保存病历
-//        BmobUser user=BmobUser.getCurrentUser();
-//        user.setEmail("abc@qq.com");
-//        user.update(new UpdateListener() {
-//            @Override
-//            public void done(BmobException e) {
-//                if(e==null)
-//                {
-//                    toast("success");
-//                }else {
-//                    toast("fail"+e.getMessage().toString());
-//
-//                }
-//            }
-//        });
+        UploadBingliData();
     }
 
     @Override
@@ -198,7 +189,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     protected void dialogFinish() //删除确认对话框
     {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("");
         builder.setMessage("确认直接返回？");
 
@@ -225,36 +216,71 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     }
 
-    private void UploadBingliData()
-    {
-        if(etZhuYaoZhengZhuang.getText().toString().equals("")||
-                etZhenDuan.getText().toString().equals("")||
-                etFaBingGuoCheng.getText().toString().equals(""))
-        {
-            toast("信息不全");return;
+
+    @OnClick(R.id.btn_RenYuanXinXi)
+    public void onBtnRenYuanXinXiClicked() {
+        showDialogChoosePatient();
+    }
+
+    @OnClick(R.id.ll_RenYuanXinXi)
+    public void onLlRenYuanXinXiClicked() {
+        showDialogChoosePatient();
+    }
+
+    private void UploadBingliData() {
+        if (etZhuYaoZhengZhuang.getText().toString().equals("") ||
+                etZhenDuan.getText().toString().equals("") ||
+                etFaBingGuoCheng.getText().toString().equals("")) {
+            toast("信息不全");
+            return;
         }
-        BmobUser bmobUser=BmobUser.getCurrentUser();
+        BmobUser bmobUser = BmobUser.getCurrentUser();
         //toast(bmobUser.getUsername());
-        Bingli bingli=new Bingli();
+        Bingli bingli = new Bingli();
         bingli.setDoctor(BmobUser.getCurrentUser());
         bingli.setName("老王");
         bingli.setAge("23");
         bingli.setGender("男");
+        bingli.setReadFlag(false);
         bingli.setZhengzhuang(etZhuYaoZhengZhuang.getText().toString());
         bingli.setZhenduan(etZhenDuan.getText().toString());
         bingli.setFabing(etFaBingGuoCheng.getText().toString());
         bingli.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
-                if(e==null)
-                {
+                if (e == null) {
                     toast("添加成功");
                     finish();
-                }else
-                {
-                    toast("添加失败"+ e.getMessage());
+                } else {
+                    toast("添加失败" + e.getMessage());
                 }
             }
         });
+    }
+
+    private List<User> getPatientDataList() {
+        BmobQuery<User> bmobQuery = new BmobQuery<>();
+        bmobQuery.addQueryKeys("objectId");
+        bmobQuery.addQueryKeys("username");
+        bmobQuery.addQueryKeys("realName");
+        bmobQuery.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> object, BmobException e) {
+                if (e == null) {
+                    patientDatalist=object;
+                    toast("共" + object.size() + "条数据。");
+                    //注意：这里的Person对象中只有指定列的数据。
+                } else {
+                    toast("查询失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
+            }
+        });
+        return patientDatalist;
+    }
+
+    private void showDialogChoosePatient()//选择病人弹出对话框
+    {
+
+        toast("请选择病人");
     }
 }

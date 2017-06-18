@@ -13,10 +13,18 @@ import cn.bmob.v3.socketio.callback.StringCallback;
  * Created by LockyLuo on 2017/5/26.
  */
 
-public class Bingli extends BmobObject{
+public class Bingli extends BmobObject {
 
 
+    public Boolean getReadFlag() {
+        return readFlag;
+    }
 
+    public void setReadFlag(Boolean readFlag) {
+        this.readFlag = readFlag;
+    }
+
+    private Boolean readFlag;
     private BmobUser doctor;
     private BmobUser patient;
 
@@ -51,9 +59,6 @@ public class Bingli extends BmobObject{
     private String zhengzhuang;
     private String zhenduan;
     private String fabing;
-
-
-
 
 
     public String getAge() {
@@ -104,7 +109,6 @@ public class Bingli extends BmobObject{
     public void setFabing(String fabing) {
         this.fabing = fabing;
     }
-
 
 
 }

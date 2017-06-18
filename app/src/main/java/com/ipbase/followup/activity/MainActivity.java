@@ -23,6 +23,8 @@ import com.ipbase.followup.widget.TitleBar;
 
 import butterknife.Bind;
 
+
+
 /**
  * 项目名称：FollowUp
  * 类描述：主界面
@@ -182,7 +184,7 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
 
 
 
-        getPresenter().rightClick();
+        //getPresenter().rightClick();
     }
 
     @Override
