@@ -1,6 +1,7 @@
 package com.ipbase.followup.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class BingliAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        data.get(position);
+        Bingli bingli= data.get(position);
         viewHolder=null;
         if (view == null) {
 
@@ -68,16 +69,21 @@ public class BingliAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.tvPatientName.setText(data.get(position).getName());
-        //viewHolder.ivGravatar.setImageDrawable(data.get(position).getHead());
-        viewHolder.tvGender.setText(data.get(position).getGender());
-        viewHolder.tvAge.setText(data.get(position).getAge());
+        viewHolder.tvPatientName.setText(bingli.getName());
+        //
+        viewHolder.tvGender.setText(bingli.getGender());
+        if(bingli.getGender().equals("女"))
+        {
+            Drawable drawable=context.getResources().getDrawable(R.drawable.girl);
+            viewHolder.ivGravatar.setImageDrawable(drawable);
+        }
+        viewHolder.tvAge.setText(bingli.getAge());
 
-        viewHolder.tvZhengzhuang.setText(data.get(position).getZhengzhuang());
-        viewHolder.tvZhengduan.setText(data.get(position).getZhenduan());
-        viewHolder.tvFabing.setText(data.get(position).getFabing());
-        viewHolder.tvDate.setText(data.get(position).getCreatedAt());
-        changeReadFlag(data.get(position).getReadFlag());
+        viewHolder.tvZhengzhuang.setText(bingli.getZhengzhuang());
+        viewHolder.tvZhengduan.setText(bingli.getZhenduan());
+        viewHolder.tvFabing.setText(bingli.getFabing());
+        viewHolder.tvDate.setText(bingli.getCreatedAt());
+        changeReadFlag(bingli.getReadFlag());
 
         viewHolder.tvHuizhen.setOnClickListener(new View.OnClickListener() {
             @Override
