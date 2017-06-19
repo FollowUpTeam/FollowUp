@@ -6,19 +6,18 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ipbase.followup.R;
 import com.ipbase.followup.activity.base.AbsViewActivity;
-import com.ipbase.followup.adapter.BingliAdapter;
 import com.ipbase.followup.adapter.PopListAdapter;
 import com.ipbase.followup.bean.Bingli;
+import com.ipbase.followup.fragment.main.BingLiFragment;
 import com.ipbase.followup.model.bean.User;
 import com.ipbase.followup.widget.TitleBar;
 import com.kesar.mvp.presenter.impl.MainPresenter;
@@ -56,11 +55,18 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
     ImageButton btnRenYuanXinXi;
     @Bind(R.id.ll_RenYuanXinXi)
     LinearLayout llRenYuanXinXi;
+    @Bind(R.id.bingli_upload_name)
+    TextView bingliUploadName;
+
     private LayoutInflater layoutInflater;
-    private static List<User> patientDatalist = new ArrayList<>();
-    PopListAdapter popListAdapter;
-    ListView myListView;
+    private LayoutInflater inflater;
+    private List<User> patientDatalist = new ArrayList<>();
     public static User patientUser;
+    private PopListAdapter popListAdapter;
+    private ListView myListView;
+    Context context;
+    private AlertDialog dialogChoose;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_upload_bingli;
@@ -173,6 +179,11 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        context = getApplicationContext();
+        myListView = new ListView(context);
+        myListView.setDivider(getResources().getDrawable(R.color.blue_toolbar_bg_sel));
+        myListView.setDividerHeight(1);
+        getPatientDataList();
     }
 
     @OnClick(R.id.et_zhuYaoZhengZhuang)
@@ -189,15 +200,33 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     @OnClick(R.id.ll_jiuZhenXinXi)
     public void onLlJiuZhenXinXiClicked() {
-        toast("跳转到病人信息");
+        //toast("跳转到病人信息");
+        showDialogChoosePatient();
     }
 
     @OnClick(R.id.btn_jiuZhenXinXi)
     public void onViewClicked() {
-        toast("btn跳转到病人信息");
+        //toast("btn跳转到病人信息");
+        showDialogChoosePatient();
     }
 
-    protected void dialogFinish() //删除确认对话框
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @OnClick(R.id.btn_RenYuanXinXi)
+    public void onBtnRenYuanXinXiClicked() {
+        showDialogChoosePatient();
+    }
+
+    @OnClick(R.id.ll_RenYuanXinXi)
+    public void onLlRenYuanXinXiClicked() {
+        showDialogChoosePatient();
+    }
+
+    protected void dialogFinish() //返回确认对话框
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("");
@@ -225,17 +254,6 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     }
 
-
-    @OnClick(R.id.btn_RenYuanXinXi)
-    public void onBtnRenYuanXinXiClicked() {
-        showDialogChoosePatient();
-    }
-
-    @OnClick(R.id.ll_RenYuanXinXi)
-    public void onLlRenYuanXinXiClicked() {
-        showDialogChoosePatient();
-    }
-
     private void UploadBingliData() {
         if (etZhuYaoZhengZhuang.getText().toString().equals("") ||
                 etZhenDuan.getText().toString().equals("") ||
@@ -246,25 +264,20 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
         Bingli bingli = new Bingli();
         bingli.setDoctor(BmobUser.getCurrentUser());
-        if(patientUser!=null)
-        {
+        if (patientUser != null) {
             bingli.setPatient(patientUser);
             bingli.setName(patientUser.getRealName());
-            bingli.setAge(patientUser.getAge()+"");
+            bingli.setAge(patientUser.getAge() + "");
 
-            if(patientUser.getSex()==0)
-            {
+            if (patientUser.getSex() == 0) {
                 bingli.setGender("男");
-            }else
-            {
+            } else {
                 bingli.setGender("女");
             }
-            if(bingli.getAge().equals("0"))
-            {
-                bingli.setAge("23");
+            if (bingli.getAge().equals("0")) {
+                bingli.setAge("未填写");
             }
-        }else
-        {
+        } else {
             bingli.setName("老王");
             bingli.setAge("23");
             bingli.setGender("男");
@@ -279,6 +292,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
             public void done(String s, BmobException e) {
                 if (e == null) {
                     toast("添加成功");
+                    BingLiFragment.waitForRefresh = 1;//告诉bingliFragment要刷新数据
                     finish();
                 } else {
                     toast("添加失败" + e.getMessage());
@@ -291,6 +305,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
         popListAdapter = new PopListAdapter(getContext(), patientDatalist);
         myListView.setAdapter(popListAdapter);
     }
+
     private List<User> getPatientDataList() {
         BmobQuery<User> bmobQuery1 = new BmobQuery<>();
         bmobQuery1.order("-createdAt");
@@ -301,8 +316,8 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
             @Override
             public void done(List<User> object, BmobException e) {
                 if (e == null) {
-                    patientDatalist=object;
-                    BmobQuery<User> bmobQuery2= new BmobQuery<>();
+                    patientDatalist = object;
+                    BmobQuery<User> bmobQuery2 = new BmobQuery<>();
                     bmobQuery2.addQueryKeys("username");
                     bmobQuery2.setLimit(100);
                     bmobQuery2.order("-createdAt");
@@ -310,8 +325,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
                         @Override
                         public void done(List<User> object, BmobException e) {
                             if (e == null) {
-                                for(int i=0;i<object.size();i++)
-                                {
+                                for (int i = 0; i < object.size(); i++) {
                                     patientDatalist.get(i).setUsername(object.get(i).getUsername());
                                 }
                                 BmobQuery<User> bmobQuery3 = new BmobQuery<>();
@@ -322,14 +336,44 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
                                     @Override
                                     public void done(List<User> object, BmobException e) {
                                         if (e == null) {
-                                            for(int i=0;i<object.size();i++)
-                                            {
+                                            for (int i = 0; i < object.size(); i++) {
                                                 patientDatalist.get(i).setRealName(object.get(i).getRealName());
                                             }
-                                            initList();
-                                            toast("共" + object.size() + "人");
+                                            BmobQuery<User> bmobQuery4 = new BmobQuery<>();
+                                            bmobQuery4.addQueryKeys("age");
+                                            bmobQuery4.setLimit(100);
+                                            bmobQuery4.order("-createdAt");
+                                            bmobQuery4.findObjects(new FindListener<User>() {
+                                                @Override
+                                                public void done(List<User> object, BmobException e) {
+                                                    if (e == null) {
+                                                        for (int i = 0; i < object.size(); i++) {
+                                                            patientDatalist.get(i).setAge(object.get(i).getAge());
+                                                        }
+                                                        BmobQuery<User> bmobQuery5 = new BmobQuery<>();
+                                                        bmobQuery5.addQueryKeys("sex");
+                                                        bmobQuery5.setLimit(100);
+                                                        bmobQuery5.order("-createdAt");
+                                                        bmobQuery5.findObjects(new FindListener<User>() {
+                                                            @Override
+                                                            public void done(List<User> object, BmobException e) {
+                                                                if (e == null) {
+                                                                    for (int i = 0; i < object.size(); i++) {
+                                                                        patientDatalist.get(i).setSex(object.get(i).getSex());
+                                                                    }
+                                                                    initList();
+                                                                } else {
+                                                                    toast("查询用户列表失败：" + e.getMessage() + "," + e.getErrorCode());
+                                                                }
+                                                            }
+                                                        });
+
+                                                    } else {
+                                                    }
+                                                }
+                                            });
+
                                         } else {
-                                            toast("查询失败：" + e.getMessage() + "," + e.getErrorCode());
                                         }
                                     }
                                 });
@@ -348,30 +392,22 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
 
     private void showDialogChoosePatient()//选择病人弹出对话框
     {
-        AlertDialog.Builder builder;
-        final AlertDialog alertDialog;
-        Context context = getApplicationContext();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.pop_listview, (ViewGroup)findViewById(R.id.lv_poplistView));
-        myListView = (ListView) layout.findViewById(R.id.lv_poplistView);
-        getPatientDataList();
+        if (dialogChoose == null) {
+            dialogChoose = new AlertDialog.Builder(this).create();
+            dialogChoose.setView(myListView);
 
+            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    patientUser = patientDatalist.get(position);
+                    bingliUploadName.setText(patientUser.getRealName());
+                    toast("已选择" + patientUser.getRealName());
+                    dialogChoose.dismiss();
+                }
+            });
+        }
 
-        builder = new AlertDialog.Builder(this);//这里只能传this
-        builder.setView(layout);
-        alertDialog = builder.create();
-        alertDialog.show();
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                patientUser=patientDatalist.get(position);
-                toast("已选择"+patientUser.getRealName());
-                alertDialog.dismiss();
-            }
-        });
-        //toast("请选择病人");
+        dialogChoose.show();
     }
-
 
 }

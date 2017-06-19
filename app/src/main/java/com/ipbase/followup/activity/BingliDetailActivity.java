@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ipbase.followup.R;
 import com.ipbase.followup.activity.base.AbsViewActivity;
 import com.ipbase.followup.bean.Bingli;
+import com.ipbase.followup.fragment.main.BingLiFragment;
 import com.ipbase.followup.widget.TitleBar;
 import com.kesar.mvp.presenter.impl.MainPresenter;
 import com.kesar.mvp.view.IMainView;
@@ -40,6 +41,8 @@ public class BingliDetailActivity extends AbsViewActivity<MainPresenter> impleme
     ImageButton detailBtnRenYuanXinXi;
     @Bind(R.id.detail_ll_RenYuanXinXi)
     LinearLayout detailLlRenYuanXinXi;
+    @Bind(R.id.bingli_detail_name)
+    TextView bingliDetailName;
     private LayoutInflater layoutInflater;
     public static Bingli bingli;
 
@@ -159,35 +162,33 @@ public class BingliDetailActivity extends AbsViewActivity<MainPresenter> impleme
     }
 
 
-    void initData()
-    {
+    void initData() {
         tvFaBingGuoCheng.setText(bingli.getFabing().toString());
         tvZhuYaoZhengZhuang.setText(bingli.getZhengzhuang().toString());
         tvZhenDuan.setText(bingli.getZhenduan().toString());
+        bingliDetailName.setText(bingli.getName().toString());
         setReadFlag();
+        BingLiFragment.waitForRefresh=1;
     }
 
-    void setReadFlag()
-    {
-        if(bingli.getReadFlag())
-        {
+    void setReadFlag() {
+        if (bingli.getReadFlag()) {
             return;
         }
-        Bingli bingliFlag=new Bingli();
+        Bingli bingliFlag = new Bingli();
         bingliFlag.setReadFlag(true);
         bingliFlag.update(bingli.getObjectId(), new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if(e==null){
+                if (e == null) {
                     toast("已读");
-                }else{
-                    toast("更新失败");
+                } else {
+                    toast("更新标记失败");
                 }
             }
 
         });
     }
-
 
 
     @OnClick(R.id.detail_btn_jiuZhenXinXi)

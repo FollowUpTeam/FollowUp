@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ipbase.followup.R;
-import com.ipbase.followup.activity.UploadBingliActivity;
 import com.ipbase.followup.model.bean.User;
 
 import java.util.List;
@@ -54,7 +53,7 @@ public class PopListAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        data.get(position);
+        User user=data.get(position);
         viewHolder = null;
         if (view == null) {
 
@@ -65,15 +64,24 @@ public class PopListAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.tvPoplistItemUserName.setText(data.get(position).getUsername());
-        viewHolder.tvPoplistItemRealName.setText(data.get(position).getRealName());
-        viewHolder.llListviewItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UploadBingliActivity.patientUser=data.get(position);
-                showToast(data.get(position).getRealName());
-            }
-        });
+        viewHolder.tvPoplistItemUserName.setText(user.getUsername());
+        viewHolder.tvPoplistItemRealName.setText(user.getRealName());
+        if(user.getSex()==0)
+        {
+            viewHolder.poplistGender.setText("男");
+        }else
+        {
+            viewHolder.poplistGender.setText("女");
+        }
+        if(user.getAge()==0)
+        {
+            viewHolder.poplistAge.setText("年龄未知");
+        }else
+        {
+            viewHolder.poplistAge.setText(user.getAge()+"岁");
+        }
+
+
         return view;
     }
 
@@ -96,6 +104,10 @@ public class PopListAdapter extends BaseAdapter {
         TextView tvPoplistItemUserName;
         @Bind(R.id.tv_poplistItemRealName)
         TextView tvPoplistItemRealName;
+        @Bind(R.id.poplist_gender)
+        TextView poplistGender;
+        @Bind(R.id.poplist_age)
+        TextView poplistAge;
         @Bind(R.id.ll_listviewItem)
         LinearLayout llListviewItem;
 

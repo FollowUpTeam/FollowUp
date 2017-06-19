@@ -53,9 +53,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     ListView lvBingliFragment;
     @Bind(R.id.bingli_swipeRefresh)
     SwipeRefreshLayout bingliSwipeRefresh;
-    //public static SwipeRefreshLayout refreshLayout;
     private List<Bingli> list = new ArrayList<>();
-    //private HashMap<String, Object> map = new HashMap<>();
     private Bingli bingliData = new Bingli();
     private BingliAdapter bingliAdapter;
     private int gravatar;
@@ -63,6 +61,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     private String sex;
     private View rootView;
     private boolean isRefreshing=false;
+    public static int waitForRefresh=0;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_bingli;
@@ -94,18 +93,26 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = super.onCreateView(inflater, container, savedInstanceState);
             ButterKnife.bind(this, rootView);
-            initList();
+
             bingliSwipeRefresh.post(new Runnable(){
                 @Override
                 public void run() {
                     bingliSwipeRefresh.setRefreshing(true);
+                    new Thread(getDataRunable).start();
                 }
             });
-
+            //initList();
+//            new Thread(getDataRunable).start();
 
             bingliSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -133,8 +140,6 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
             });
         }
 
-
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -147,15 +152,35 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     @Override
     public void onResume() {//返回界面时刷新
         super.onResume();
-        new Thread(getDataRunable).start();
 
+        if(waitForRefresh==1)
+        {
+            waitForRefresh=0;
+            new Thread(getDataRunable).start();
+        }
+//        new Thread(getDataRunable).start();
+    }
+
+    void setReadFlag(Bingli bingli,Boolean bool) {
+        Bingli bingliFlag = new Bingli();
+        bingliFlag.setReadFlag(bool);
+        bingliFlag.update(bingli.getObjectId(), new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                } else {
+                    toast("设置失败");
+                }
+            }
+
+        });
     }
 
     protected void dialogDel(final int position) //删除确认对话框
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("确认删除此病历？");
-        builder.setItems(new String[]{"确认删除"}, new DialogInterface.OnClickListener() {
+        builder.setTitle("其它？");
+        builder.setItems(new String[]{"删除此病历","标记为未读"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -164,9 +189,12 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
                         deleteBingli(list.get(position));
                         list.remove(position);
                         stopRefresh();
-                    }
-
-                        break;
+                    }break;
+                    case 1:
+                    {
+                        setReadFlag(list.get(position),false);
+                        new Thread(getDataRunable).start();
+                    }break;
                 }
             }
         });
@@ -199,6 +227,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
                 if(e==null){
                     list=bmobList;
                     initList();
+                    toast("已刷新病历列表");
                 }else{
                 }
             }
@@ -213,6 +242,7 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
             isRefreshing=false;
 
             getActivity().runOnUiThread(stopRefreshRunnable);//更新listview界面数据
+
         }
     };
 
@@ -224,10 +254,17 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     };
 
 
+
     private void stopRefresh() {
         bingliAdapter.notifyDataSetChanged();
-        bingliSwipeRefresh.setRefreshing(false);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(bingliSwipeRefresh!=null)
+                bingliSwipeRefresh.setRefreshing(false);
+            }
+        }, 1000);
         //toast("已刷新病历列表");
     }
 

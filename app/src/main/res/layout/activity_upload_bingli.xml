@@ -150,16 +150,24 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:text="就诊信息"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/default_title_textSize" />
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="就诊信息"
-                    android:textColor="@android:color/black"
+                    android:text="广东省中医院"
+                    android:textColor="@color/blue_toolbar_bg_sel"
                     android:textSize="@dimen/default_title_textSize" />
-
                 <ImageButton
                     android:id="@+id/btn_jiuZhenXinXi"
                     android:layout_width="50dp"
@@ -178,16 +186,25 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:text="人员信息"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/default_title_textSize" />
+                <TextView
+                    android:id="@+id/bingli_upload_name"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="人员信息"
-                    android:textColor="@android:color/black"
+                    android:text="姓名"
+                    android:textColor="@color/blue_toolbar_bg_sel"
                     android:textSize="@dimen/default_title_textSize" />
-
                 <ImageButton
                     android:id="@+id/btn_RenYuanXinXi"
                     android:layout_width="50dp"
