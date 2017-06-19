@@ -13,6 +13,8 @@ public interface ITitleBarView
      */
      void setTitle(String title);
 
+
+    public void setLeftBtnVisable(boolean flag);
     /**
      * 设置右侧靠左的按钮是否可见
      *

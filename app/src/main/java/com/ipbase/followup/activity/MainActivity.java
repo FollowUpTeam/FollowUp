@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ipbase.followup.R;
 import com.ipbase.followup.activity.base.AbsViewActivity;
+import com.kesar.common_utils.SkipActivityUtil;
 import com.kesar.mvp.presenter.impl.MainPresenter;
 import com.ipbase.followup.fragment.main.BingLiFragment;
 import com.ipbase.followup.fragment.main.DataFragment;
@@ -21,6 +22,8 @@ import com.kesar.mvp.view.ITitleBarView;
 import com.ipbase.followup.widget.TitleBar;
 
 import butterknife.Bind;
+
+
 
 /**
  * 项目名称：FollowUp
@@ -170,7 +173,18 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
     @Override
     public void rightClick()
     {
-        getPresenter().rightClick();
+        switch (getThisTitle())
+        {
+            case "病历":
+            {
+                SkipActivityUtil.skip(this,UploadBingliActivity.class);
+                break;
+            }
+        }
+
+
+
+        //getPresenter().rightClick();
     }
 
     @Override
@@ -193,6 +207,30 @@ public class MainActivity extends AbsViewActivity<MainPresenter> implements IMai
         }
     }
 
+    /**
+     * 获取标题
+     *
+     */
+    public String getThisTitle()
+    {
+        if (mTitleBar != null)
+        {
+            return mTitleBar.getTitle();
+        }
+         return "";
+    }
+
+    /**
+     * 设置左侧按钮是否可见
+     *
+     * @param flag 是否可见
+     */
+    @Override
+    public void setLeftBtnVisable(boolean flag) {
+        if (mTitleBar != null) {
+            mTitleBar.setLeftBtnVisable(flag);
+        }
+    }
     /**
      * 设置右侧靠左的按钮是否可见
      *

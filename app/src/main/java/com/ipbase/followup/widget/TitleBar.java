@@ -142,4 +142,13 @@ public class TitleBar extends RelativeLayout implements View.OnClickListener {
     public void setTitle(String str) {
         tvTitle.setText(str);
     }
+
+    /**
+     * 获取标题文字
+     *
+     */
+    public String getTitle() {
+
+        return tvTitle.getText().toString();
+    }
 }

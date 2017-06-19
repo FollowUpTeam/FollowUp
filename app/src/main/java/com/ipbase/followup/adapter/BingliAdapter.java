@@ -1,22 +1,22 @@
 package com.ipbase.followup.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.ipbase.followup.R;
 import com.ipbase.followup.bean.Bingli;
 
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by LockyLuo on 2017/4/30.
@@ -25,12 +25,11 @@ import java.util.List;
 
 public class BingliAdapter extends BaseAdapter {
     private List<Bingli> data;
-    private Context context;
+    private static Context context;
     private LayoutInflater mInflater;
     private String[][] imgUrls;
     private ViewHolder viewHolder;
-
-
+    private boolean readFlag=false;
 
     public BingliAdapter(Context context, List<Bingli> data) {
 
@@ -59,73 +58,70 @@ public class BingliAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup viewGroup) {
         data.get(position);
         viewHolder=null;
-        if(view==null)
-        {
-            viewHolder=new ViewHolder();
-            view=mInflater.inflate(R.layout.bingli_item,null);
+        if (view == null) {
 
-            viewHolder.iv_head=(ImageView)view.findViewById(R.id.iv_gravatar);
-            viewHolder.tv_UserName=(TextView)view.findViewById(R.id.tv_patientName);
-            viewHolder.tv_gender=(TextView)view.findViewById(R.id.tv_gender);
-            viewHolder.age=(TextView)view.findViewById(R.id.tv_age);
-            viewHolder.readFlagText=(TextView)view.findViewById(R.id.tv_bingliFlag);
-            viewHolder.readFlagImg=(ImageView)view.findViewById(R.id.iv_gravatar);
-            viewHolder.tv1=(TextView)view.findViewById(R.id.tv_zhengzhuang);
-            viewHolder.tv2=(TextView)view.findViewById(R.id.tv_zhengduan);
-            viewHolder.tv3=(TextView)view.findViewById(R.id.tv_fabing);
-            viewHolder.date=(TextView)view.findViewById(R.id.tv_date);
-            viewHolder.tv_huizheng=(TextView)view.findViewById(R.id.tv_huizhen);
-            viewHolder.tv_pinglun=(TextView)view.findViewById(R.id.tv_pinglun);
+            view = mInflater.inflate(R.layout.bingli_item, null);
+            viewHolder=new ViewHolder(view);
 
             view.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.tv_UserName.setText(data.get(position).getName());
-        viewHolder.iv_head.setImageDrawable(data.get(position).getHead());
-        viewHolder.tv_gender.setText(data.get(position).getGender());
-        viewHolder.age.setText(data.get(position).getAge());
+        viewHolder.tvPatientName.setText(data.get(position).getName());
+        //viewHolder.ivGravatar.setImageDrawable(data.get(position).getHead());
+        viewHolder.tvGender.setText(data.get(position).getGender());
+        viewHolder.tvAge.setText(data.get(position).getAge());
 
-        viewHolder.tv_huizheng.setOnClickListener(new View.OnClickListener() {
+        viewHolder.tvZhengzhuang.setText(data.get(position).getZhengzhuang());
+        viewHolder.tvZhengduan.setText(data.get(position).getZhenduan());
+        viewHolder.tvFabing.setText(data.get(position).getFabing());
+        viewHolder.tvDate.setText(data.get(position).getCreatedAt());
+        changeReadFlag(data.get(position).getReadFlag());
+
+        viewHolder.tvHuizhen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showToast("huizhen1");
             }
         });
+        viewHolder.tvPinglun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("huizhen2");
+            }
+        });
+
+
+
 
         return view;
     }
 
-    private View.OnClickListener onClickListenerUserDetail=new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+    private void changeReadFlag(Boolean readFlag)
+    {
+        if(readFlag!=null)
+        {
+            if(readFlag)
+            {
+                viewHolder.tvBingliFlag.setText("已读");
+                viewHolder.tvBingliFlag.setTextColor(context.getResources().getColor(R.color.purple));
+                viewHolder.ivReadFlagImage.setImageResource(R.drawable.hadread);
+            }else
+            {
+                viewHolder.tvBingliFlag.setText("未读");
+                viewHolder.tvBingliFlag.setTextColor(context.getResources().getColor(R.color.red));
+                viewHolder.ivReadFlagImage.setImageResource(R.drawable.notread);
+            }
 
         }
-    };
-
-
-    //通过ViewHolder显示项的内容
-    static class ViewHolder {
-        public ImageView iv_head;
-        public TextView tv_UserName;
-        public TextView tv_gender;
-        public TextView age;
-        public TextView readFlagText;
-        public ImageView readFlagImg;
-        public TextView tv1;
-        public TextView tv2;
-        public TextView tv3;
-        public TextView date;
-        public TextView tv_huizheng;
-        public TextView tv_pinglun;
-
 
     }
 
+
     //控制toast时间-----------------
     private static Toast mToast;
-    public static void showToast(Context context, String msg) {
+    public static void showToast(String msg) {
 
         if (mToast == null) {
             mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
@@ -136,4 +132,36 @@ public class BingliAdapter extends BaseAdapter {
     }
 
 
+    static class ViewHolder {
+        @Bind(R.id.iv_gravatar)
+        ImageView ivGravatar;
+        @Bind(R.id.tv_patientName)
+        TextView tvPatientName;
+        @Bind(R.id.tv_gender)
+        TextView tvGender;
+        @Bind(R.id.tv_age)
+        TextView tvAge;
+        @Bind(R.id.tv_bingliFlag)
+        TextView tvBingliFlag;
+        @Bind(R.id.iv_readFlagImage)
+        ImageView ivReadFlagImage;
+        @Bind(R.id.tv_zhengzhuang)
+        TextView tvZhengzhuang;
+        @Bind(R.id.tv_zhengduan)
+        TextView tvZhengduan;
+        @Bind(R.id.tv_fabing)
+        TextView tvFabing;
+        @Bind(R.id.split)
+        LinearLayout split;
+        @Bind(R.id.tv_date)
+        TextView tvDate;
+        @Bind(R.id.tv_huizhen)
+        TextView tvHuizhen;
+        @Bind(R.id.tv_pinglun)
+        TextView tvPinglun;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
 }
