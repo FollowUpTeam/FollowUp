@@ -177,16 +177,16 @@ public class BingliDetailActivity extends AbsViewActivity<MainPresenter> impleme
         }
         Bingli bingliFlag = new Bingli();
         bingliFlag.setReadFlag(true);
-        bingliFlag.update(bingli.getObjectId(), new UpdateListener() {
+        bingliFlag.update(getContext(),bingli.getObjectId(), new UpdateListener() {
             @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    toast("已读");
-                } else {
-                    toast("更新标记失败");
-                }
+            public void onSuccess() {
+                toast("已读");
             }
 
+            @Override
+            public void onFailure(int i, String s) {
+                toast("更新标记失败");
+            }
         });
     }
 

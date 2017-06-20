@@ -2,12 +2,9 @@ package com.kesar.mvp.model.impl;
 
 import android.content.Context;
 
+import com.ipbase.followup.model.bean.User;
 import com.kesar.mvp.model.base.CallBack;
 import com.kesar.mvp.model.ILoginModel;
-import com.ipbase.followup.model.bean.User;
-
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * 登陆model
@@ -28,7 +25,7 @@ public class LoginModel implements ILoginModel
     public void doLogin(Context context, User user, final CallBack callBack)
     {
         if (user == null || context == null) return;
-        user.login(new SaveListener<Object>()
+      /*  user.login(new SaveListener<Object>()
         {
             @Override
             public void done(Object o, BmobException e)
@@ -47,6 +44,6 @@ public class LoginModel implements ILoginModel
                 }
                 callBack.onFinish();
             }
-        });
+        });*/
     }
 }

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_navi"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="您好，为了更好的帮助您进行科学的饮食治疗和管理分析，希望您填下这份问卷，谢谢！"
+            android:textColor="@android:color/black"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="1.您的性别"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.男" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.女" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="2.您的年龄段"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.20岁以下" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.21-30岁" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.31-50岁" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.51-60岁" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.61岁以上" />
+
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="3.您患糖尿病的时间有多久了？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.一年以内" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.1-3年" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.3-5年" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.5-10年" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.10年以上" />
+
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_5"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="4.您糖尿病的病情程度是？"
+        android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.轻度" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.中度" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.重度" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.不清楚" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="5.您是否做过糖尿病的饮食控制？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.曾经做过，但没坚持" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.正在做饮食控制" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.没有做过" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="6.您知道自己的饮食规律是否达标吗？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.知道" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.不知道" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="7.您是否在做血糖监测？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.没做过" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.偶尔做过" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.不定期做" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.定期做监测" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="8.您通常在什么地方进行血糖监测？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.医院" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.家里" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.社区卫生社" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.其他地方" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="9.您是否用过智能手机、平板电脑等智能设备？"
+            android:textColor="@android:color/black"/>
+
+        <com.ipbase.followup.widget.RadioGroupEx
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.没有用过" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B.没有用过但可以尝试去使用" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C.用过但不经常使用" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D.经常使用" />
+        </com.ipbase.followup.widget.RadioGroupEx>
+
+        <Button
+            android:id="@+id/btn_add_friend"
+            style="@style/style_text_white"
+            android:background="@drawable/btn_login_selector"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="提交"
+            />
+
+    </LinearLayout>
+
+
+</ScrollView >

@@ -1,3 +1,4 @@
+/*
 package com.kesar.mvp.presenter.impl;
 
 import com.kesar.common_utils.ToastUtils;
@@ -11,10 +12,12 @@ import java.util.concurrent.TimeUnit;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 
+*/
 /**
  * 启动画面的Presenter
  * Created by kesar on 2016/4/3.
- */
+ *//*
+
 public class SplashPresenter extends AbsBasePresenter<ISplashView, IBmobInitModel> {
     private final int wait_time = 5; // 启动画面等待时间
 
@@ -22,20 +25,24 @@ public class SplashPresenter extends AbsBasePresenter<ISplashView, IBmobInitMode
         super(view, new BmobInitModel());
     }
 
-    /**
+    */
+/**
      * 唯一获取实例的方式
      *
      * @param view
      * @return
-     */
+     *//*
+
     public static SplashPresenter build(ISplashView view) {
         return new SplashPresenter(view);
     }
 
 
-    /**
+    */
+/**
      * 在其他线程中加载和初始化数据
-     */
+     *//*
+
     public void loadAndIntData() {
         getView().getHandler().postDelayed(new Runnable() {
             @Override
@@ -53,3 +60,4 @@ public class SplashPresenter extends AbsBasePresenter<ISplashView, IBmobInitMode
         }, TimeUnit.SECONDS.toMillis(wait_time));
     }
 }
+*/

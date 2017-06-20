@@ -263,7 +263,7 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
         }
 
         Bingli bingli = new Bingli();
-        bingli.setDoctor(BmobUser.getCurrentUser());
+        bingli.setDoctor(BmobUser.getCurrentUser(context));
         if (patientUser != null) {
             bingli.setPatient(patientUser);
             bingli.setName(patientUser.getRealName());
@@ -287,17 +287,19 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
         bingli.setZhengzhuang(etZhuYaoZhengZhuang.getText().toString());
         bingli.setZhenduan(etZhenDuan.getText().toString());
         bingli.setFabing(etFaBingGuoCheng.getText().toString());
-        bingli.save(new SaveListener<String>() {
+        bingli.save(getContext(),new SaveListener() {
             @Override
-            public void done(String s, BmobException e) {
-                if (e == null) {
-                    toast("添加成功");
-                    BingLiFragment.waitForRefresh = 1;//告诉bingliFragment要刷新数据
-                    finish();
-                } else {
-                    toast("添加失败" + e.getMessage());
-                }
+            public void onSuccess() {
+                toast("添加成功");
+                BingLiFragment.waitForRefresh = 1;//告诉bingliFragment要刷新数据
+                finish();
             }
+
+            @Override
+            public void onFailure(int i, String s) {
+                toast("添加失败:" + s);
+            }
+
         });
     }
 
@@ -312,80 +314,92 @@ public class UploadBingliActivity extends AbsViewActivity<MainPresenter> impleme
         bmobQuery1.setLimit(100);
         bmobQuery1.addQueryKeys("objectId");
 
-        bmobQuery1.findObjects(new FindListener<User>() {
+        bmobQuery1.findObjects(getContext(),new FindListener<User>() {
             @Override
-            public void done(List<User> object, BmobException e) {
-                if (e == null) {
-                    patientDatalist = object;
+            public void onSuccess(List<User> list) {
+                {
+                    patientDatalist = list;
                     BmobQuery<User> bmobQuery2 = new BmobQuery<>();
                     bmobQuery2.addQueryKeys("username");
                     bmobQuery2.setLimit(100);
                     bmobQuery2.order("-createdAt");
-                    bmobQuery2.findObjects(new FindListener<User>() {
+                    bmobQuery2.findObjects(getContext(),new FindListener<User>() {
+
                         @Override
-                        public void done(List<User> object, BmobException e) {
-                            if (e == null) {
-                                for (int i = 0; i < object.size(); i++) {
-                                    patientDatalist.get(i).setUsername(object.get(i).getUsername());
-                                }
-                                BmobQuery<User> bmobQuery3 = new BmobQuery<>();
-                                bmobQuery3.addQueryKeys("realName");
-                                bmobQuery3.setLimit(100);
-                                bmobQuery3.order("-createdAt");
-                                bmobQuery3.findObjects(new FindListener<User>() {
-                                    @Override
-                                    public void done(List<User> object, BmobException e) {
-                                        if (e == null) {
-                                            for (int i = 0; i < object.size(); i++) {
-                                                patientDatalist.get(i).setRealName(object.get(i).getRealName());
-                                            }
-                                            BmobQuery<User> bmobQuery4 = new BmobQuery<>();
-                                            bmobQuery4.addQueryKeys("age");
-                                            bmobQuery4.setLimit(100);
-                                            bmobQuery4.order("-createdAt");
-                                            bmobQuery4.findObjects(new FindListener<User>() {
-                                                @Override
-                                                public void done(List<User> object, BmobException e) {
-                                                    if (e == null) {
-                                                        for (int i = 0; i < object.size(); i++) {
-                                                            patientDatalist.get(i).setAge(object.get(i).getAge());
-                                                        }
-                                                        BmobQuery<User> bmobQuery5 = new BmobQuery<>();
-                                                        bmobQuery5.addQueryKeys("sex");
-                                                        bmobQuery5.setLimit(100);
-                                                        bmobQuery5.order("-createdAt");
-                                                        bmobQuery5.findObjects(new FindListener<User>() {
-                                                            @Override
-                                                            public void done(List<User> object, BmobException e) {
-                                                                if (e == null) {
-                                                                    for (int i = 0; i < object.size(); i++) {
-                                                                        patientDatalist.get(i).setSex(object.get(i).getSex());
-                                                                    }
-                                                                    initList();
-                                                                } else {
-                                                                    toast("查询用户列表失败：" + e.getMessage() + "," + e.getErrorCode());
-                                                                }
-                                                            }
-                                                        });
-
-                                                    } else {
-                                                    }
-                                                }
-                                            });
-
-                                        } else {
-                                        }
-                                    }
-                                });
-                            } else {
+                        public void onSuccess(List<User> list) {
+                            for (int i = 0; i < list.size(); i++) {
+                                patientDatalist.get(i).setUsername(list.get(i).getUsername());
                             }
+                            BmobQuery<User> bmobQuery3 = new BmobQuery<>();
+                            bmobQuery3.addQueryKeys("realName");
+                            bmobQuery3.setLimit(100);
+                            bmobQuery3.order("-createdAt");
+                            bmobQuery3.findObjects(getContext(),new FindListener<User>() {
+                                @Override
+                                public void onSuccess(List<User> list) {
+                                    for (int i = 0; i < list.size(); i++) {
+                                        patientDatalist.get(i).setRealName(list.get(i).getRealName());
+                                    }
+                                    BmobQuery<User> bmobQuery4 = new BmobQuery<>();
+                                    bmobQuery4.addQueryKeys("age");
+                                    bmobQuery4.setLimit(100);
+                                    bmobQuery4.order("-createdAt");
+                                    bmobQuery4.findObjects(getContext(),new FindListener<User>() {
+                                        @Override
+                                        public void onSuccess(List<User> list) {
+                                            for (int i = 0; i < list.size(); i++) {
+                                                patientDatalist.get(i).setAge(list.get(i).getAge());
+                                            }
+                                            BmobQuery<User> bmobQuery5 = new BmobQuery<>();
+                                            bmobQuery5.addQueryKeys("sex");
+                                            bmobQuery5.setLimit(100);
+                                            bmobQuery5.order("-createdAt");
+                                            bmobQuery5.findObjects(getContext(),new FindListener<User>() {
+                                                @Override
+                                                public void onSuccess(List<User> list) {
+                                                    for (int i = 0; i < list.size(); i++) {
+                                                        patientDatalist.get(i).setSex(list.get(i).getSex());
+                                                    }
+                                                    initList();
+                                                }
+
+                                                @Override
+                                                public void onError(int i, String s) {
+                                                    toast("查询用户列表失败：" +s);
+                                                }
+
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onError(int i, String s) {
+
+                                        }
+
+                                    });
+                                }
+
+                                @Override
+                                public void onError(int i, String s) {
+
+                                }
+
+                            });
+                        }
+                        @Override
+                        public void onError(int i, String s) {
+
                         }
                     });
-                } else {
                 }
+
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
             }
         });
-
 
         return patientDatalist;
     }

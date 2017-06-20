@@ -2,14 +2,11 @@ package com.ipbase.followup.fragment.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +15,20 @@ import android.widget.ListView;
 
 import com.ipbase.followup.R;
 import com.ipbase.followup.activity.BingliDetailActivity;
+import com.ipbase.followup.activity.UploadBingliActivity;
 import com.ipbase.followup.adapter.BingliAdapter;
+import com.ipbase.followup.base.ParentWithNaviActivity;
+import com.ipbase.followup.base.ParentWithNaviFragment;
 import com.ipbase.followup.bean.Bingli;
-import com.kesar.library.bmob.BmobSDK;
-import com.kesar.mvp.presenter.impl.BingLiPresenter;
-import com.kesar.mvp.view.IBingLiView;
+import com.ipbase.followup.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DeleteListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -46,7 +42,7 @@ import cn.bmob.v3.listener.UpdateListener;
  * 修改时间：2017/6/6
  * 修改备注：实现功能
  */
-public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements IBingLiView {
+public class BingLiFragment extends ParentWithNaviFragment {
 
 
     @Bind(R.id.lv_bingliFragment)
@@ -59,10 +55,9 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     private int gravatar;
     private String name;
     private String sex;
-    private View rootView;
     private boolean isRefreshing=false;
     public static int waitForRefresh=0;
-    @Override
+   /* @Override
     protected int getLayoutId() {
         return R.layout.fragment_bingli;
     }
@@ -85,6 +80,31 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     @Override
     public void showToast(String text) {
         toast(text);
+    }*/
+
+    @Override
+    protected String title() {
+        return "病历";
+    }
+
+    @Override
+    public Object right() {
+        return R.drawable.base_action_bar_add_bg_selector;
+    }
+
+    @Override
+    public ParentWithNaviActivity.ToolBarListener setToolBarListener() {
+        return new ParentWithNaviActivity.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+
+            }
+
+            @Override
+            public void clickRight() {
+                startActivity(UploadBingliActivity.class,null);
+            }
+        };
     }
 
     public void initList() {//创建病例数据列表
@@ -93,52 +113,45 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = super.onCreateView(inflater, container, savedInstanceState);
-            ButterKnife.bind(this, rootView);
+        rootView= inflater.inflate(R.layout.fragment_bingli,container, false);
+        initNaviView();
+        ButterKnife.bind(this, rootView);
 
-            bingliSwipeRefresh.post(new Runnable(){
-                @Override
-                public void run() {
-                    bingliSwipeRefresh.setRefreshing(true);
-                    new Thread(getDataRunable).start();
-                }
-            });
-            //initList();
+        bingliSwipeRefresh.post(new Runnable(){
+            @Override
+            public void run() {
+                bingliSwipeRefresh.setRefreshing(true);
+                new Thread(getDataRunable).start();
+            }
+        });
+        //initList();
 //            new Thread(getDataRunable).start();
 
-            bingliSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
+        bingliSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
 
-                    new Thread(getDataRunable).start();//启动刷新数据线程
-                }
+                new Thread(getDataRunable).start();//启动刷新数据线程
+            }
 
-            });
+        });
 
-            lvBingliFragment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//跳转详细病历
-                    BingliDetailActivity.bingli=list.get(position);
-                    Intent intent=new Intent(getContext(),BingliDetailActivity.class);
-                    startActivity(intent);
-                }
-            });
-            lvBingliFragment.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    dialogDel(position);//删除本地数据
-                    return true;
-                }
-            });
-        }
+        lvBingliFragment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//跳转详细病历
+                BingliDetailActivity.bingli=list.get(position);
+                Intent intent=new Intent(getContext(),BingliDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        lvBingliFragment.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                dialogDel(position);//删除本地数据
+                return true;
+            }
+        });
 
         return rootView;
     }
@@ -164,13 +177,15 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
     void setReadFlag(Bingli bingli,Boolean bool) {
         Bingli bingliFlag = new Bingli();
         bingliFlag.setReadFlag(bool);
-        bingliFlag.update(bingli.getObjectId(), new UpdateListener() {
+        bingliFlag.update(getContext(),bingli.getObjectId(), new UpdateListener() {
             @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                } else {
-                    toast("设置失败");
-                }
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                toast("设置失败");
             }
 
         });
@@ -203,15 +218,16 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
 
     private void deleteBingli(Bingli bingli)//删除bmob病历
     {
-        bingli.delete(bingli.getObjectId(), new UpdateListener() {
+        bingli.delete(getContext(), bingli.getObjectId(), new DeleteListener() {
             @Override
-            public void done(BmobException e) {
-                if(e==null){
-                    toast("删除成功");
-                }else{
-                }
+            public void onSuccess() {
+                toast("删除成功");
             }
 
+            @Override
+            public void onFailure(int i, String s) {
+                toast("删除失败");
+            }
         });
     }
 
@@ -220,17 +236,20 @@ public class BingLiFragment extends TitleBarFragment<BingLiPresenter> implements
         BmobQuery<Bingli> query1=new BmobQuery<>();
         query1.setLimit(100);
         query1.order("-createdAt");
-        query1.addWhereEqualTo("doctor", BmobUser.getCurrentUser());
-        query1.findObjects(new FindListener<Bingli>() {
+        query1.addWhereEqualTo("doctor", BmobUser.getCurrentUser(getContext()));
+        query1.findObjects(getContext(),new FindListener<Bingli>() {
             @Override
-            public void done(List<Bingli> bmobList, BmobException e) {
-                if(e==null){
-                    list=bmobList;
-                    initList();
-                    toast("已刷新病历列表");
-                }else{
-                }
+            public void onSuccess(List<Bingli> bmobList) {
+                list=bmobList;
+                initList();
+                toast("已刷新病历列表");
             }
+
+            @Override
+            public void onError(int i, String s) {
+                toast("刷新病历列表失败："+s);
+            }
+
         });
         return list;
     }

@@ -6,10 +6,10 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <com.ipbase.followup.widget.TitleBar
+   <!-- <com.ipbase.followup.widget.TitleBar
         android:id="@+id/tbv_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"/>
+        android:layout_height="55dp"/>-->
 
     <FrameLayout
         android:id="@+id/realtabcontent"

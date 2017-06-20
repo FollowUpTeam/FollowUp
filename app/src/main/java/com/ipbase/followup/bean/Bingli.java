@@ -5,8 +5,7 @@ import android.graphics.drawable.Drawable;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.socketio.callback.StringCallback;
+
 
 
 /**

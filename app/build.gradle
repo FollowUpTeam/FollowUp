@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "com.ipbase.followup"
@@ -17,14 +17,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /**
+     * 解决NewIM SDK 和服务SDK的冲突
+     */
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    sourceSets {
+        main.jniLibs.srcDirs = ['libs']
+    }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.orhanobut:logger:1.4'
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile project(':mvp')
     compile project(':library')
     compile project(':common-utils')
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
-    testCompile 'junit:junit:4.12'
+    //bmob-im:自2.0.5开始提供aar格式：包含BmobNewIM_xxxx.jar、androidasync_2.1.6.jar、bmob_im_notification_strings.xml
+    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
+    //bmob-sdk:3.4.7
+    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
+    compile files('libs/KJFrameForAndroid_v2.244.jar')
 }

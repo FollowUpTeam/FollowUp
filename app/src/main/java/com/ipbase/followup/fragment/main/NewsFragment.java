@@ -34,9 +34,8 @@ public class NewsFragment extends TitleBarFragment<NewsPresenter> implements INe
     public void initView()
     {
         setTitle("消息");
-        setRightBtnVisable(true);
-        setRightToLeftBtnVisable(true);
-        setRightBtnImage(R.drawable.icon_more);
+        setRightBtnVisable(false);
+        setRightToLeftBtnVisable(false);
     }
 
     @Override

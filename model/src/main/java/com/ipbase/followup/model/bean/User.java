@@ -1,5 +1,6 @@
 package com.ipbase.followup.model.bean;
 
+
 import cn.bmob.v3.BmobUser;
 
 /**
@@ -11,6 +12,8 @@ public class User extends BmobUser
     private int age; // 年龄
     private int sex; // 性别
     private String work; // 工作
+    private String avatar; //头像
+    private Boolean isPatient; //是否是病人，true为病人，false为医生
 
     public String getRealName()
     {
@@ -50,5 +53,21 @@ public class User extends BmobUser
     public void setWork(String work)
     {
         this.work = work;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Boolean getPatient() {
+        return isPatient;
+    }
+
+    public void setPatient(Boolean patient) {
+        isPatient = patient;
     }
 }

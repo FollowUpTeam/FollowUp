@@ -3,8 +3,6 @@ package com.kesar.mvp.presenter.impl;
 import android.text.TextUtils;
 
 import com.kesar.mvp.model.ILoginModel;
-import com.kesar.mvp.model.base.CallBack;
-import com.ipbase.followup.model.bean.User;
 import com.kesar.mvp.model.impl.LoginModel;
 import com.kesar.mvp.presenter.AbsBasePresenter;
 import com.kesar.mvp.view.ILoginView;
@@ -46,7 +44,7 @@ public class LoginPresenter extends AbsBasePresenter<ILoginView,ILoginModel>
         String passWord=getView().getEtPassWordText();
         if(!checkInput(phoneNum,passWord)) return;
 
-        User user=getModel().buildUser(phoneNum,passWord);
+       /* User user=getModel().buildUser(phoneNum,passWord);
         getView().showDialog();
         getModel().doLogin(getView().getContext(), user, new CallBack()
         {
@@ -68,7 +66,7 @@ public class LoginPresenter extends AbsBasePresenter<ILoginView,ILoginModel>
             {
                 getView().dismissDialog();
             }
-        });
+        });*/
     }
 
     /**

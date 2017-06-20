@@ -2,9 +2,9 @@ package com.kesar.mvp.model;
 
 import android.content.Context;
 
+import com.ipbase.followup.model.bean.User;
 import com.kesar.mvp.model.base.CallBack;
 import com.kesar.mvp.model.base.IModel;
-import com.ipbase.followup.model.bean.User;
 
 /**
  * Created by kesar on 2016/4/9.
@@ -18,7 +18,7 @@ public interface IRegisterModel extends IModel
      * @param password
      * @return
      */
-    User buildUser(String phone,String username,String password);
+    User buildUser(String phone, String username, String password);
 
     /**
      * 注册用户

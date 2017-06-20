@@ -2,9 +2,9 @@ package com.kesar.mvp.presenter.impl;
 
 import android.text.TextUtils;
 
+import com.ipbase.followup.model.bean.User;
 import com.kesar.mvp.model.IRegisterModel;
 import com.kesar.mvp.model.base.CallBack;
-import com.ipbase.followup.model.bean.User;
 import com.kesar.mvp.model.impl.RegisterModel;
 import com.kesar.mvp.presenter.AbsBasePresenter;
 import com.kesar.mvp.view.IRegisterView;
